@@ -16,7 +16,9 @@ var scanCmd = &cobra.Command{
 	Long:  `scan triggers a filewalk and outputs all filenames.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Scanner Path: %s", cmd.Flag("path").Value.String())
-		sc, err := scanner.NewLocalScanner(scanner.WithPath(cmd.Flag("path").Value.String()))
+		sc, err := scanner.NewLocalScanner(
+			scanner.WithPath(cmd.Flag("path").Value.String()),
+			scanner.WithFilter(scanner.NewExtensionFilter(".mp4", ".mp3", ".m4a", ".m4v")))
 		if err != nil {
 			panic(err)
 		}
