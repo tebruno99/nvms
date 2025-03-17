@@ -2,6 +2,10 @@ package scanner
 
 import "path/filepath"
 
+type Filter interface {
+	Filter(path string) bool
+}
+
 type ExtensionFilter struct {
 	filterList map[string]bool
 }

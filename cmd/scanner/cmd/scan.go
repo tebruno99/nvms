@@ -4,9 +4,10 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
+	"database/sql"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/cobra"
-	"github.com/tebruno99/nvms/scanner"
+	"github.com/tebruno99/nvms"
 )
 
 // scanCmd represents the scan command
@@ -15,14 +16,15 @@ var scanCmd = &cobra.Command{
 	Short: "trigger a scan with the provided arguments",
 	Long:  `scan triggers a filewalk and outputs all filenames.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Scanner Path: %s", cmd.Flag("path").Value.String())
-		sc, err := scanner.NewLocalScanner(
-			scanner.WithPath(cmd.Flag("path").Value.String()),
-			scanner.WithFilter(scanner.NewExtensionFilter(".mp4", ".mp3", ".m4a", ".m4v")))
+		db, err := sql.Open("sqlite3", cmd.Flag("database").Value.String())
 		if err != nil {
 			panic(err)
 		}
-		sc.Scan()
+		mm := nvms.NewMediaManager(db)
+		err = mm.ScanLibrary(1)
+		if err != nil {
+			panic(err)
+		}
 	},
 }
 

@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS files;
+DROP TABLE IF EXISTS library;
+DROP TABLE IF EXISTS library_type;
+DROP TABLE IF EXISTS library_path;
+DROP TABLE IF EXISTS media_item;
+DROP TABLE IF EXISTS media_item_stream;
